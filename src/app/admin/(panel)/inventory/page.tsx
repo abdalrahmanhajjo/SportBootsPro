@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { updateStock } from "@/app/actions/admin";
 import { Notice, PageHeader, StatCard } from "@/components/admin/bits";
+import { ProductImage } from "@/components/ProductImage";
 import { SubmitButton } from "@/components/ui";
 import { listProducts } from "@/lib/admin-queries";
 import { formatMoney } from "@/lib/money";
@@ -42,8 +43,11 @@ export default async function InventoryPage({ searchParams }: PageProps<"/admin/
             {sorted.map(({ product: p, categoryName }) => (
               <tr key={p.id}>
                 <td>
-                  <Link href={`/admin/products/${p.id}`} className="font-medium hover:text-brand-700">
-                    {p.icon} {p.name}
+                  <Link href={`/admin/products/${p.id}`} className="inline-flex items-center gap-3 font-medium hover:text-brand-700">
+                    <span className="h-9 w-9 shrink-0 overflow-hidden rounded-lg">
+                      <ProductImage name={p.name} imageUrl={p.imageUrl} />
+                    </span>
+                    {p.name}
                   </Link>
                   {!p.isActive && <span className="ml-2 text-xs text-neutral-400">(hidden)</span>}
                 </td>

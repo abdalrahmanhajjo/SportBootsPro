@@ -20,7 +20,7 @@ let product: typeof products.$inferSelect;
 
 beforeEach(async () => {
   db = await createDb({ pgliteDir: "memory://" }); // fresh, migrated + seeded database
-  [product] = await db.select().from(products).where(eq(products.slug, "metcon-8")); // stock 4, $129.99
+  [product] = await db.select().from(products).where(eq(products.slug, "metro-lift-8")); // stock 4, $129.99
 });
 
 describe("resolveCart", () => {
@@ -74,7 +74,7 @@ describe("placeOrder", () => {
 
   it("refuses to oversell and leaves stock untouched", async () => {
     const res = await placeOrder(db, [{ p: product.id, s: "42", q: 3 }, { p: product.id, s: "40", q: 2 }], buyer, settings);
-    expect(res).toEqual({ ok: false, error: "Only 4 × Metcon 8 left in stock." });
+    expect(res).toEqual({ ok: false, error: "Only 4 × Metro Lift 8 left in stock." });
     const [after] = await db.select().from(products).where(eq(products.id, product.id));
     expect(after.stock).toBe(4);
     expect(await db.select().from(orders)).toHaveLength(0);

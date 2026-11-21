@@ -30,6 +30,7 @@ export const categories = pgTable("categories", {
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   description: text("description").notNull().default(""),
   icon: varchar("icon", { length: 16 }).notNull().default("👟"),
+  imageUrl: text("image_url"),
   ...timestamps,
 });
 

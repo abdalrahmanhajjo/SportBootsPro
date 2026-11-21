@@ -13,7 +13,7 @@ export default async function ShopLayout({ children }: LayoutProps<"/">) {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
         Skip to content
       </a>
-      <Header storeName={settings.storeName} />
+      <Header settings={settings} />
       <main id="main" className="flex-1">
         {children}
       </main>
@@ -24,9 +24,9 @@ export default async function ShopLayout({ children }: LayoutProps<"/">) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with us on WhatsApp"
-          className="fixed right-5 bottom-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-105"
+          className="fixed right-5 bottom-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_-5px_rgba(37,211,102,0.5)] transition hover:scale-105"
         >
-          <MessageCircle className="h-7 w-7" />
+          <MessageCircle className="h-7 w-7" strokeWidth={1.75} />
         </a>
       )}
     </>

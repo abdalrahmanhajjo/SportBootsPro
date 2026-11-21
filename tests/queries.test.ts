@@ -14,7 +14,7 @@ let cancelledOrderId: number;
 
 beforeAll(async () => {
   const db = await getDb();
-  [{ id: metconId }] = await db.select({ id: products.id }).from(products).where(eq(products.slug, "metcon-8"));
+  [{ id: metconId }] = await db.select({ id: products.id }).from(products).where(eq(products.slug, "metro-lift-8"));
   const a = await placeOrder(db, [{ p: metconId, s: "42", q: 2 }], buyer, settings);
   const b = await placeOrder(db, [{ p: metconId, s: "41", q: 1 }], buyer, settings);
   if (!a.ok || !b.ok) throw new Error("order failed");
@@ -35,7 +35,7 @@ describe("storefront queries", () => {
     const prices = running.rows.map((r) => r.priceCents);
     expect(prices).toEqual([...prices].sort((a, b) => a - b));
 
-    expect((await searchProducts({ q: "metcon" })).rows.map((r) => r.slug)).toEqual(["metcon-8"]);
+    expect((await searchProducts({ q: "metro lift" })).rows.map((r) => r.slug)).toEqual(["metro-lift-8"]);
     expect((await searchProducts({ min: "200", max: "250" })).rows.every((r) => r.priceCents >= 20000 && r.priceCents <= 25000)).toBe(true);
     expect((await searchProducts({ q: "%_" })).total).toBe(0); // LIKE wildcards are escaped
     const page2 = await searchProducts({ page: "2" });
@@ -77,12 +77,12 @@ describe("admin queries", () => {
     expect(d.totals).toEqual({ revenue: 25998, orders: 1 });
     expect(d.counts).toEqual({ customers: 1, products: 17, pending: 1 });
     expect(d.sales).toHaveLength(14);
-    expect(d.lowStock.some((p) => p.name === "Metcon 8")).toBe(true);
+    expect(d.lowStock.some((p) => p.name === "Metro Lift 8")).toBe(true);
 
     const r = await getReport(30);
     expect(r.summary).toEqual({ revenue: 25998, orders: 1, customers: 1 });
     expect(r.sales).toHaveLength(30);
-    expect(r.topProducts[0]).toEqual({ name: "Metcon 8", units: 2, revenue: 25998 });
+    expect(r.topProducts[0]).toEqual({ name: "Metro Lift 8", units: 2, revenue: 25998 });
     expect(r.byCategory[0]).toEqual({ name: "Training", revenue: 25998 });
   });
 });

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/admin/LoginForm";
+import { Logo } from "@/components/brand/Logo";
 import { getSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +13,8 @@ export default async function AdminLoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-ink px-4">
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl">
         <div className="mb-8 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 font-black text-white">SB</span>
-          <h1 className="mt-4 text-2xl font-black">Admin sign in</h1>
+          <Logo className="justify-center" />
+          <h1 className="mt-6 text-2xl font-bold">Admin sign in</h1>
           <p className="mt-1 text-sm text-neutral-500">SportBootsPro store dashboard</p>
         </div>
         <LoginForm />

@@ -4,7 +4,7 @@ export function InfoPage({ eyebrow, title, intro, children }: { eyebrow: string;
   return (
     <div className="container-page max-w-3xl py-16">
       <p className="eyebrow">{eyebrow}</p>
-      <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">{title}</h1>
+      <h1 className="mt-2 display text-6xl sm:text-7xl">{title}</h1>
       {intro && <p className="mt-4 text-lg text-neutral-600">{intro}</p>}
       <div className="prose-page mt-6">{children}</div>
     </div>

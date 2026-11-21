@@ -4,7 +4,18 @@ A sportswear and athletic-footwear store for Lebanon: a storefront where custome
 
 **Stack:** Next.js 16 (App Router, Server Actions) · TypeScript · Tailwind CSS 4 · PostgreSQL + Drizzle ORM · Zod · Vitest · GitHub Actions
 
-![Home page](docs/screenshots/01-home.png)
+![Home page](docs/screenshots/home.jpg)
+
+## Brand
+
+![SportBootsPro brand foundation](docs/brand/brand-board.png)
+
+- **Symbol:** a forward-cut "S" for speed, with a signal-red dot for the ball. Source: `src/components/brand/Logo.tsx`. SVG files are in `public/brand/`.
+- **Palette:** Ink `#0B0D10` · Signal Red `#E10600` · Chalk `#F6F5F1` · Steel `#6B7079`
+- **Type:** Barlow Condensed ExtraBold Italic (headlines) · Inter (text) · Cairo (Arabic)
+- **Icons:** Lucide outline icons, 1.5–1.75 stroke
+- **Taglines:** "Gear up. Play harder." · «جهّز حالك. العب أقوى.»
+- The live brand board is at `/brand`. The app icon, favicon, iOS icon, web manifest and social-share image are generated from the same symbol.
 
 ## Features
 
@@ -37,8 +48,8 @@ A sportswear and athletic-footwear store for Lebanon: a storefront where custome
 
 | | |
 |---|---|
-| ![Product](docs/screenshots/03-product.png) | ![Dashboard](docs/screenshots/10-dashboard.png) |
-| ![Order admin](docs/screenshots/11-order.png) | ![Reports](docs/screenshots/14-reports.png) |
+| ![Best sellers](docs/screenshots/best-sellers.jpg) | ![Product page](docs/screenshots/product.jpg) |
+| ![Shop](docs/screenshots/shop.jpg) | ![Admin dashboard](docs/screenshots/admin-dashboard.jpg) |
 
 ## Run it locally
 
@@ -93,7 +104,7 @@ src/
     admin/           admin login + dashboard pages
     actions/         server actions (cart, checkout, forms, admin mutations)
     api/health/      health check
-  components/        UI components (shop/, admin/)
+  components/        UI components (brand/, shop/, admin/)
   db/                Drizzle schema, connection, migrations runner, seed data
   lib/               business logic: orders, cart, catalog & admin queries, auth, validation
   proxy.ts           redirects signed-out visitors away from /admin
@@ -101,6 +112,10 @@ drizzle/             SQL migrations
 tests/               Vitest tests
 ```
 
+## Photos
+
+The demo catalog uses free photos from [Unsplash](https://unsplash.com) ([Unsplash License](https://unsplash.com/license)), served from Unsplash's image CDN, which resizes them for each screen. Some photos show the logos of the brands that made the shoes. For a real launch, replace them with your own product photos: open **Admin → Products → edit → Image URL**, and for category tiles **Admin → Categories → Photo URL**.
+
 ## License
 
-All rights reserved © SportBootsPro.
+Code: all rights reserved © SportBootsPro. Fonts: Barlow Condensed, Inter and Cairo are under the SIL Open Font License.

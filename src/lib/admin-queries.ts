@@ -72,7 +72,7 @@ export async function getDashboard(lowStockThreshold: number) {
       .from(sql`(select 1) as one`),
     db.select().from(orders).orderBy(desc(orders.createdAt)).limit(6),
     db
-      .select({ id: products.id, name: products.name, stock: products.stock, icon: products.icon })
+      .select({ id: products.id, name: products.name, stock: products.stock, imageUrl: products.imageUrl })
       .from(products)
       .where(and(eq(products.isActive, true), lte(products.stock, lowStockThreshold)))
       .orderBy(asc(products.stock))

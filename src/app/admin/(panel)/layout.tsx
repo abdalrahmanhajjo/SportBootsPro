@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ExternalLink, LogOut } from "lucide-react";
 import { logout } from "@/app/actions/admin";
 import { AdminNav } from "@/components/admin/AdminNav";
+import { Logo } from "@/components/brand/Logo";
 import { unreadMessageCount } from "@/lib/admin-queries";
 import { requireAdmin } from "@/lib/auth";
 
@@ -13,11 +14,11 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const session = await requireAdmin();
   const unread = await unreadMessageCount();
   return (
-    <div className="min-h-screen bg-neutral-50 lg:grid lg:grid-cols-[240px_1fr]">
+    <div className="min-h-screen bg-chalk lg:grid lg:grid-cols-[240px_1fr]">
       <aside className="bg-ink p-4 text-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col">
-        <Link href="/admin" className="mb-6 flex items-center gap-2 px-2 pt-2 text-lg font-black">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-sm">SB</span>
-          Admin
+        <Link href="/admin" className="mb-6 flex flex-col gap-1 px-2 pt-2" aria-label="Admin dashboard">
+          <Logo tone="light" size="sm" />
+          <span className="pl-9 text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase">Admin</span>
         </Link>
         <AdminNav unreadMessages={unread} />
         <div className="mt-6 space-y-1 border-t border-white/10 pt-4 lg:mt-auto">

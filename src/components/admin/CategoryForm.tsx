@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { saveCategory, type AdminFormState } from "@/app/actions/admin";
 import { FormMessage, SubmitButton } from "@/components/ui";
 
-export function CategoryForm({ category }: { category?: { id: number; name: string; description: string; icon: string } }) {
+export function CategoryForm({ category }: { category?: { id: number; name: string; description: string; icon: string; imageUrl: string | null } }) {
   const [state, action] = useActionState<AdminFormState, FormData>(saveCategory, {});
   const e = state.errors ?? {};
   const uid = category?.id ?? "new";
@@ -32,6 +32,13 @@ export function CategoryForm({ category }: { category?: { id: number; name: stri
           Description
         </label>
         <input id={`desc-${uid}`} name="description" defaultValue={v.description ?? category?.description} className="input" />
+      </div>
+      <div>
+        <label htmlFor={`img-${uid}`} className="label">
+          Photo URL <span className="font-normal text-steel">(shown on the home page)</span>
+        </label>
+        <input id={`img-${uid}`} name="imageUrl" type="url" defaultValue={v.imageUrl ?? category?.imageUrl ?? ""} placeholder="https://…" className="input" />
+        {e.imageUrl && <p className="field-error">{e.imageUrl}</p>}
       </div>
       <SubmitButton className={category ? "btn-outline btn-sm" : "btn-primary"} pendingText="Saving…">
         {category ? "Save" : "Add category"}

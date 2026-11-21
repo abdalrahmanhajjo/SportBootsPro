@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
+import "@fontsource/barlow-condensed/600.css";
+import "@fontsource/barlow-condensed/800-italic.css";
+import "@fontsource-variable/cairo";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -12,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: { type: "website", siteName: "SportBootsPro" },
 };
 
-export const viewport: Viewport = { themeColor: "#e00000" };
+export const viewport: Viewport = { themeColor: "#0b0d10" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

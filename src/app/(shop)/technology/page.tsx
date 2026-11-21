@@ -18,7 +18,7 @@ export default function TechnologyPage() {
     <div className="container-page py-16">
       <div className="max-w-3xl">
         <p className="eyebrow">Technology</p>
-        <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">What makes a performance shoe</h1>
+        <h1 className="mt-2 display text-6xl sm:text-7xl">What makes a performance shoe</h1>
         <p className="mt-4 text-lg text-neutral-600">
           Every product in our store is chosen for how it performs. Here is what to look for when you pick your next pair.
         </p>

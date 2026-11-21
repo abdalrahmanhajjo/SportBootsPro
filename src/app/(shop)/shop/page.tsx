@@ -37,7 +37,7 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
     <div className="container-page py-12">
       <header className="mb-10">
         <p className="eyebrow">Shop</p>
-        <h1 className="mt-2 text-4xl font-black tracking-tight">{activeCategory ? activeCategory.name : "All products"}</h1>
+        <h1 className="display mt-2 text-6xl sm:text-7xl">{activeCategory ? activeCategory.name : "All products"}</h1>
         <p className="mt-2 text-neutral-500">
           {activeCategory?.description || "Performance footwear for every sport."} · {result.total} product
           {result.total === 1 ? "" : "s"}
@@ -49,7 +49,7 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
         <aside>
           <form action="/shop" className="card space-y-6 p-5 lg:sticky lg:top-24">
             <p className="flex items-center gap-2 font-semibold">
-              <SlidersHorizontal className="h-4 w-4" /> Filters
+              <SlidersHorizontal className="h-4 w-4" strokeWidth={1.75} /> Filters
             </p>
             <div>
               <label htmlFor="q" className="label">
@@ -114,9 +114,9 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 xl:grid-cols-3">
-              {result.rows.map((p) => (
-                <ProductCard key={p.id} product={p} currency={settings.currency} />
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 xl:grid-cols-3">
+              {result.rows.map((p, i) => (
+                <ProductCard key={p.id} product={p} currency={settings.currency} priority={i < 3} />
               ))}
             </div>
           )}

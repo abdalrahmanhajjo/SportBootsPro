@@ -17,7 +17,7 @@ export default async function ContactPage() {
   return (
     <div className="container-page py-16">
       <p className="eyebrow">Contact</p>
-      <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">We&apos;re here to help</h1>
+      <h1 className="mt-2 display text-6xl sm:text-7xl">We&apos;re here to help</h1>
       <p className="mt-4 max-w-2xl text-lg text-neutral-600">
         Questions about sizes, stock or an order? Message us — WhatsApp is the fastest way to reach us.
       </p>

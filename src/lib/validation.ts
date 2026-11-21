@@ -81,6 +81,10 @@ export const categorySchema = z.object({
   name: required("Name", 80),
   description: trimmed(500).default(""),
   icon: trimmed(16).default("👟"),
+  imageUrl: z
+    .union([z.literal(""), z.url("Image URL must be a valid http(s) URL").max(1000)])
+    .default("")
+    .refine((v) => v === "" || /^https?:\/\//i.test(v), { message: "Image URL must start with http:// or https://" }),
 });
 
 export const settingsSchema = z.object({

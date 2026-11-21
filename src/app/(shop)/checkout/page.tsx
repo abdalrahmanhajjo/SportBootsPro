@@ -16,7 +16,7 @@ export default async function CheckoutPage() {
 
   return (
     <div className="container-page py-12">
-      <h1 className="text-4xl font-black tracking-tight">Checkout</h1>
+      <h1 className="display text-6xl">Checkout</h1>
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_400px]">
         <section aria-label="Delivery details" className="card p-6 sm:p-8">
           <h2 className="mb-6 text-lg font-bold">Delivery details</h2>

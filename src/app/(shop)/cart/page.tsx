@@ -19,7 +19,7 @@ export default async function CartPage() {
     return (
       <div className="container-page flex flex-col items-center py-24 text-center">
         <p className="text-6xl" aria-hidden>🛍️</p>
-        <h1 className="mt-6 text-3xl font-black">Your cart is empty</h1>
+        <h1 className="display mt-6 text-5xl">Your cart is empty</h1>
         <p className="mt-2 text-neutral-500">Find your next pair of boots in the shop.</p>
         <Link href="/shop" className="btn-primary mt-8 px-7 py-3">
           Start shopping
@@ -30,7 +30,7 @@ export default async function CartPage() {
 
   return (
     <div className="container-page py-12">
-      <h1 className="text-4xl font-black tracking-tight">Your cart</h1>
+      <h1 className="display text-6xl">Your cart</h1>
       <p className="mt-1 text-neutral-500">
         {cart.count} item{cart.count === 1 ? "" : "s"}
       </p>

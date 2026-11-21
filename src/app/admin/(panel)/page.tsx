@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AlertTriangle, DollarSign, Mail, Package, ShoppingCart, Users } from "lucide-react";
 import { BarChart, formatDate, PageHeader, StatCard, StatusBadge } from "@/components/admin/bits";
+import { ProductImage } from "@/components/ProductImage";
 import { getDashboard } from "@/lib/admin-queries";
 import { formatMoney } from "@/lib/money";
 import { getSettings } from "@/lib/settings";
@@ -70,8 +71,11 @@ export default async function DashboardPage() {
             <ul className="mt-4 space-y-3">
               {d.lowStock.map((p) => (
                 <li key={p.id} className="flex items-center justify-between text-sm">
-                  <Link href={`/admin/products/${p.id}`} className="truncate hover:text-brand-700">
-                    {p.icon} {p.name}
+                  <Link href={`/admin/products/${p.id}`} className="flex min-w-0 items-center gap-3 hover:text-brand-700">
+                    <span className="h-9 w-9 shrink-0 overflow-hidden rounded-lg">
+                      <ProductImage name={p.name} imageUrl={p.imageUrl} />
+                    </span>
+                    <span className="truncate">{p.name}</span>
                   </Link>
                   <span className={`badge ${p.stock === 0 ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-800"}`}>{p.stock} left</span>
                 </li>

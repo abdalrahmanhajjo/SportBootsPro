@@ -220,8 +220,9 @@ export async function saveCategory(_prev: AdminFormState, formData: FormData): P
     .where(id ? and(eq(categories.slug, slug), ne(categories.id, id)) : eq(categories.slug, slug));
   if (clash) return { ok: false, errors: { name: "A category with this name already exists" }, values: echo(formData) };
 
-  if (id) await db.update(categories).set({ ...parsed.data, slug }).where(eq(categories.id, id));
-  else await db.insert(categories).values({ ...parsed.data, slug });
+  const values = { ...parsed.data, imageUrl: parsed.data.imageUrl || null, slug };
+  if (id) await db.update(categories).set(values).where(eq(categories.id, id));
+  else await db.insert(categories).values(values);
   revalidatePath("/", "layout");
   return { ok: true, message: id ? "Category updated." : "Category added." };
 }

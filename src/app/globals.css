@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
+/* ── SportBootsPro brand tokens ──
+   Ink #0B0D10 · Signal Red #E10600 · Chalk #F6F5F1 · Steel #6B7079
+   Display: Barlow Condensed ExtraBold Italic · Text: Inter · Arabic: Cairo */
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --color-brand-50: #fff1f1;
-  --color-brand-100: #ffdfdf;
-  --color-brand-500: #f31313;
-  --color-brand-600: #e00000;
-  --color-brand-700: #bb0000;
-  --color-ink: #0a0a0a;
+  --font-display: "Barlow Condensed", "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-arabic: "Cairo Variable", "Noto Sans Arabic", sans-serif;
+  --color-brand-50: #fff1ef;
+  --color-brand-100: #ffdcd7;
+  --color-brand-500: #f2231a;
+  --color-brand-600: #e10600;
+  --color-brand-700: #b80500;
+  --color-ink: #0b0d10;
+  --color-chalk: #f6f5f1;
+  --color-chalk-2: #ecebe5;
+  --color-steel: #6b7079;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -15,7 +24,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-white font-sans text-neutral-900 antialiased;
+    @apply bg-chalk font-sans text-ink antialiased;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-600;
@@ -23,6 +32,10 @@
 }
 
 @layer components {
+  /* Big condensed italic headline — the brand's signature type. */
+  .display {
+    @apply font-display leading-[0.92] font-extrabold tracking-[-0.01em] uppercase italic;
+  }
   .container-page {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
@@ -31,7 +44,8 @@
   .btn-dark,
   .btn-outline,
   .btn-ghost,
-  .btn-danger {
+  .btn-danger,
+  .btn-light {
     @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
@@ -39,6 +53,9 @@
   }
   .btn-dark {
     @apply bg-ink text-white hover:bg-neutral-800;
+  }
+  .btn-light {
+    @apply bg-white text-ink hover:bg-chalk;
   }
   .btn-outline {
     @apply border border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900;
@@ -62,13 +79,13 @@
     @apply mt-1 text-xs font-medium text-red-600;
   }
   .card {
-    @apply rounded-2xl border border-neutral-200 bg-white;
+    @apply rounded-2xl border border-black/[0.07] bg-white;
   }
   .badge {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
   }
   .eyebrow {
-    @apply text-xs font-bold tracking-[0.2em] text-brand-600 uppercase;
+    @apply font-display text-sm font-semibold tracking-[0.22em] text-brand-600 uppercase;
   }
   .prose-page h2 {
     @apply mt-10 mb-3 text-xl font-bold text-neutral-900;

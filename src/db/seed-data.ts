@@ -2,18 +2,19 @@ import bcrypt from "bcryptjs";
 import { sql } from "drizzle-orm";
 import type { DB } from "./client";
 import { admins, categories, products, settings } from "./schema";
+import { unsplash } from "../lib/photos";
 import { DEFAULT_SETTINGS } from "../lib/settings-defaults";
 import { slugify } from "../lib/slug";
 
 const ALL_SIZES = ["38", "39", "40", "41", "42", "43", "44"];
 
 const CATEGORY_DATA = [
-  { name: "Football", description: "Professional football boots for grass and turf", icon: "⚽" },
-  { name: "Running", description: "Lightweight running shoes for all distances", icon: "🏃" },
-  { name: "Basketball", description: "High-performance basketball shoes", icon: "🏀" },
-  { name: "Tennis", description: "Court shoes for all surfaces", icon: "🎾" },
-  { name: "Training", description: "Versatile training and gym shoes", icon: "💪" },
-  { name: "Trail Running", description: "Rugged shoes for off-road adventures", icon: "🥾" },
+  { name: "Football", description: "Boots for firm ground, soft ground and turf", icon: "⚽", photo: "1570498839593-e565b39455fc" },
+  { name: "Running", description: "Road shoes from daily miles to race day", icon: "🏃", photo: "1590333748338-d629e4564ad9" },
+  { name: "Basketball", description: "Court shoes with grip, bounce and support", icon: "🏀", photo: "1787461361732-b147a1a2d886" },
+  { name: "Tennis", description: "Stable court shoes for every surface", icon: "🎾", photo: "1738165758746-5bfad0dd55ec" },
+  { name: "Training", description: "Gym and cross-training shoes", icon: "💪", photo: "1517963628607-235ccdd5476c" },
+  { name: "Trail Running", description: "Grip and protection for mountain trails", icon: "🥾", photo: "1580058572462-98e2c0e0e2f0" },
 ];
 
 type SeedProduct = {
@@ -27,26 +28,27 @@ type SeedProduct = {
   stock: number;
   featured?: boolean;
   sizes?: string[];
+  photo: string;
 };
 
 const PRODUCT_DATA: SeedProduct[] = [
-  { name: "Elite Strike Pro", category: "Football", price: 299.99, description: "Professional football boots with an advanced stud configuration for explosive acceleration.", features: "Knit upper, Carbon fibre soleplate, All-weather touch", badge: "New", stock: 45, featured: true },
-  { name: "Predator Edge+", category: "Football", price: 279.99, description: "Control the game with precision grip zones and a locked-in fit.", features: "Control zones, Knit collar, Cushioned midsole", stock: 38, featured: true },
-  { name: "Mercurial Vapor", category: "Football", price: 229.99, compareAt: 259.99, description: "Built for speed on the pitch with a featherweight upper.", features: "Lightweight upper, Traction zone, Tri-star studs", badge: "Sale", stock: 52 },
-  { name: "Phantom GT2", category: "Football", price: 239.99, description: "Precision control football boots for playmakers.", features: "Grip-knit upper, Asymmetric lacing, AG soleplate", stock: 29, sizes: ["39", "40", "41", "42", "43"] },
-  { name: "Speed Runner X", category: "Running", price: 189.99, description: "Lightweight racing shoes built for personal bests.", features: "Carbon plate, Responsive foam, Breathable knit", stock: 67, featured: true },
-  { name: "UltraBoost 23", category: "Running", price: 179.99, description: "Maximum cushioning for long runs and all-day comfort.", features: "Energy-return midsole, Sock-fit upper, Rubber outsole", badge: "New", stock: 89, featured: true },
-  { name: "Pegasus Turbo", category: "Running", price: 169.99, description: "A daily trainer with a race-day feel.", features: "Foam midsole, Air pods, Engineered mesh", stock: 76 },
-  { name: "Endorphin Pro 3", category: "Running", price: 229.99, description: "Marathon racing shoes with a propulsive ride.", features: "Rocker geometry, Carbon plate, Form-fit upper", badge: "Limited", stock: 6, featured: true },
-  { name: "Court Master Elite", category: "Basketball", price: 249.99, description: "Professional basketball performance with full-length cushioning.", features: "Full-length air unit, Woven upper, Lockdown straps", badge: "Limited", stock: 34, featured: true },
-  { name: "Signature Pro 12", category: "Basketball", price: 219.99, description: "Signature-series basketball shoes for every position.", features: "Responsive cushioning, Herringbone traction, Ankle support", stock: 56 },
-  { name: "Freak 4", category: "Basketball", price: 139.99, compareAt: 159.99, description: "Versatile court performance at a great price.", features: "Zoom cushioning, Multidirectional traction, Midfoot strap", badge: "Sale", stock: 71 },
-  { name: "Ace Serve Pro", category: "Tennis", price: 179.99, description: "Professional tennis court shoes for fast lateral movement.", features: "Gel cushioning, Durable outsole, Stable heel", stock: 43, featured: true },
-  { name: "Court Speed FF", category: "Tennis", price: 149.99, description: "Fast court coverage with a light, stable platform.", features: "Light foam, Supportive midsole, Toe guard", stock: 62 },
-  { name: "CrossFit Nano X3", category: "Training", price: 139.99, description: "Versatile training shoes for lifting, jumping and sprints.", features: "Woven upper, Energy foam, Wide toe box", badge: "New", stock: 88, featured: true },
-  { name: "Metcon 8", category: "Training", price: 129.99, description: "A stable training platform for heavy days.", features: "Flat heel, Rope-climb wrap, Breathable mesh", stock: 4 },
-  { name: "Trail Blazer X", category: "Trail Running", price: 229.99, description: "Conquer any terrain with grip and protection.", features: "Sticky rubber outsole, Waterproof upper, Rock plate", stock: 37 },
-  { name: "Speedgoat 5", category: "Trail Running", price: 139.99, compareAt: 159.99, description: "Maximum-cushion trail runner for long mountain days.", features: "Rocker sole, Lugged grip, Wide platform", badge: "Sale", stock: 51, featured: true },
+  { name: "Strike Elite FG", category: "Football", price: 299.99, photo: "1768696082282-df2812a4f7d8", description: "Our fastest firm-ground boot. A thin knit upper gives a barefoot touch on the ball, and a stiff plate snaps you into your first step.", features: "Knit upper, Carbon fibre plate, Firm-ground studs, All-weather touch", badge: "New", stock: 45, featured: true },
+  { name: "Apex Control FG", category: "Football", price: 279.99, photo: "1511886929837-354d827aae26", description: "Built for playmakers. Grip zones on the upper add spin and control on passes and shots.", features: "Grip-zone upper, Knit collar, Cushioned insole, Firm-ground studs", stock: 38, featured: true },
+  { name: "Velocity SG", category: "Football", price: 229.99, compareAt: 259.99, photo: "1511426463457-0571e247d816", description: "A featherweight boot for wet, soft pitches, with mixed studs for grip when the grass is heavy.", features: "Featherweight upper, Mixed studs, Speed outsole", badge: "Sale", stock: 52 },
+  { name: "Blaze Turf TF", category: "Football", price: 149.99, photo: "1529900748604-07564a03e7a6", description: "Rubber-studded turf shoe for 5-a-side and artificial grass — comfortable from the first game.", features: "Rubber turf outsole, Padded heel, Durable toe", stock: 29, sizes: ["39", "40", "41", "42", "43"] },
+  { name: "Speed Runner X", category: "Running", price: 189.99, photo: "1542291026-7eec264c27ff", description: "A light, snappy racer for 5K to half-marathon personal bests.", features: "Carbon plate, Responsive foam, Breathable knit", stock: 67, featured: true },
+  { name: "Cloud Glide 3", category: "Running", price: 179.99, photo: "1600185365926-3a2ce3cdb9eb", description: "Maximum cushioning for long runs and all-day comfort.", features: "Energy-return foam, Sock-fit upper, Rubber outsole", badge: "New", stock: 89, featured: true },
+  { name: "Tempo Daily Trainer", category: "Running", price: 169.99, photo: "1600185365483-26d7a4cc7519", description: "A versatile everyday trainer that still feels quick on tempo days.", features: "Dual-density foam, Engineered mesh, Reflective details", stock: 76 },
+  { name: "Marathon Carbon Pro", category: "Running", price: 229.99, photo: "1606107557195-0e29a4b5b4aa", description: "Our marathon racer: a rocker shape and carbon plate keep you efficient when the legs get tired.", features: "Rocker geometry, Carbon plate, Race-fit upper", badge: "Limited", stock: 6, featured: true },
+  { name: "Court Master Elite", category: "Basketball", price: 249.99, photo: "1631984564919-1f6b2313a71c", description: "High-top support and full-length cushioning for explosive players.", features: "Full-length cushioning, High-top collar, Lockdown laces", badge: "Limited", stock: 34, featured: true },
+  { name: "Skyline Pro 12", category: "Basketball", price: 219.99, photo: "1786379582247-258594160bf4", description: "A responsive all-rounder for guards and wings.", features: "Responsive foam, Herringbone traction, Ankle support", stock: 56 },
+  { name: "Rim Rocker 4", category: "Basketball", price: 139.99, compareAt: 159.99, photo: "1605348532760-6753d2c43329", description: "Grippy, versatile court shoe at a great price.", features: "Air-cushioned heel, Multidirectional traction, Midfoot strap", badge: "Sale", stock: 71 },
+  { name: "Ace Serve Pro", category: "Tennis", price: 179.99, photo: "1595341888016-a392ef81b7de", description: "Stable and quick for hard-court rallies and fast lateral movement.", features: "Gel cushioning, Durable outsole, Stable heel", stock: 43, featured: true },
+  { name: "Baseline Speed", category: "Tennis", price: 149.99, photo: "1599586120429-48281b6f0ece", description: "Light court shoe for players who live at the baseline.", features: "Light foam, Supportive midsole, Toe guard", stock: 62 },
+  { name: "Iron Grip Trainer", category: "Training", price: 139.99, photo: "1605408499391-6368c628ef42", description: "For lifting, jumping and sprints in one session.", features: "Woven upper, Flat stable heel, Wide toe box", badge: "New", stock: 88, featured: true },
+  { name: "Metro Lift 8", category: "Training", price: 129.99, photo: "1591311630200-ffa9120a540f", description: "A stable training platform for heavy days.", features: "Flat heel, Rope-climb wrap, Breathable mesh", stock: 4 },
+  { name: "Ridge Runner GTX", category: "Trail Running", price: 229.99, photo: "1792955104796-31d15ec8c28f", description: "Waterproof trail shoe for wet and muddy mountain runs.", features: "Sticky rubber outsole, Waterproof upper, Rock plate", stock: 37 },
+  { name: "Summit Grip 5", category: "Trail Running", price: 139.99, compareAt: 159.99, photo: "1711466067057-d1bd10183924", description: "Maximum-cushion trail runner for long days in the mountains.", features: "Rocker sole, Deep lugs, Wide platform", badge: "Sale", stock: 51, featured: true },
 ];
 
 const toCents = (n: number) => Math.round(n * 100);
@@ -54,7 +56,9 @@ const toCents = (n: number) => Math.round(n * 100);
 export async function seedDatabase(db: DB, admin?: { email: string; password: string; name?: string }) {
   const insertedCats = await db
     .insert(categories)
-    .values(CATEGORY_DATA.map((c) => ({ ...c, slug: slugify(c.name) })))
+    .values(
+      CATEGORY_DATA.map(({ photo, ...c }) => ({ ...c, slug: slugify(c.name), imageUrl: unsplash(photo) })),
+    )
     .onConflictDoNothing()
     .returning();
   const catRows = insertedCats.length ? insertedCats : await db.select().from(categories);
@@ -71,6 +75,7 @@ export async function seedDatabase(db: DB, admin?: { email: string; password: st
         features: p.features,
         priceCents: toCents(p.price),
         compareAtCents: p.compareAt ? toCents(p.compareAt) : null,
+        imageUrl: unsplash(p.photo),
         icon: catByName.get(p.category)?.icon ?? "👟",
         badge: p.badge ?? null,
         sizes: p.sizes ?? ALL_SIZES,

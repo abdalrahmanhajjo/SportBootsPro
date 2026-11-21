@@ -27,7 +27,7 @@ export default async function OrderConfirmationPage({ params }: PageProps<"/orde
     <div className="container-page max-w-3xl py-16">
       <div className="text-center">
         <CheckCircle2 className="mx-auto h-16 w-16 text-emerald-500" />
-        <h1 className="mt-4 text-4xl font-black tracking-tight">Thank you, {order.customerName.split(" ")[0]}!</h1>
+        <h1 className="display mt-4 text-6xl">Thank you, {order.customerName.split(" ")[0]}!</h1>
         <p className="mt-2 text-neutral-500">
           Your order <span className="font-mono font-semibold text-neutral-900">{order.number}</span> has been received.
           We&apos;ll contact you on {order.phone} to confirm delivery.

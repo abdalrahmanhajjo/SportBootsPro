@@ -27,6 +27,7 @@ export async function getCategories() {
       slug: categories.slug,
       description: categories.description,
       icon: categories.icon,
+      imageUrl: categories.imageUrl,
       productCount: sql<number>`(select count(*)::int from ${products} where ${col(products.categoryId)} = ${col(categories.id)} and ${col(products.isActive)})`,
     })
     .from(categories)

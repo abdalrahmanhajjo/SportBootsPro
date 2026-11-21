@@ -67,14 +67,14 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <div className="relative aspect-square overflow-hidden rounded-3xl">
-          <ProductImage name={product.name} imageUrl={product.imageUrl} icon={product.icon} seed={product.id} size="lg" />
+        <div className="relative aspect-square overflow-hidden rounded-3xl bg-chalk-2 lg:sticky lg:top-24">
+          <ProductImage name={product.name} imageUrl={product.imageUrl} icon={product.icon} seed={product.id} size="lg" priority />
           {product.badge && <span className="badge absolute top-5 left-5 bg-white px-3 py-1 text-brand-700">{product.badge}</span>}
         </div>
 
         <div>
           {category && <p className="eyebrow">{category.name}</p>}
-          <h1 className="mt-2 text-4xl font-black tracking-tight">{product.name}</h1>
+          <h1 className="display mt-2 text-6xl sm:text-7xl">{product.name}</h1>
           <div className="mt-4 flex flex-wrap items-baseline gap-3">
             <span className="text-3xl font-bold">{formatMoney(product.priceCents, settings.currency)}</span>
             {product.compareAtCents && (
@@ -123,8 +123,8 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       {related.length > 0 && (
         <section className="mt-24">
-          <h2 className="text-2xl font-black tracking-tight">You may also like</h2>
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <h2 className="display text-5xl">You may also like</h2>
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} currency={settings.currency} />
             ))}
