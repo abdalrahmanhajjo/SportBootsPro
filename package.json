@@ -11,7 +11,9 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "db:seed": "tsx src/db/seed.ts"
+    "db:seed": "tsx src/db/seed.ts",
+    "db:deploy": "tsx src/db/deploy.ts",
+    "vercel-build": "npm run db:deploy && next build"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.17",
@@ -43,7 +45,7 @@
     "typescript": "^5",
     "vitest": "^5.1.1"
   },
-  "description": "SportBootsPro — sportswear e-commerce store with admin panel (Next.js + TypeScript + PostgreSQL)",
+  "description": "SportBootsPro \u2014 sportswear e-commerce store with admin panel (Next.js + TypeScript + PostgreSQL)",
   "engines": {
     "node": ">=20.9"
   }

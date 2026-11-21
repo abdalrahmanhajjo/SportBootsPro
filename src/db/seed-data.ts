@@ -90,16 +90,19 @@ export async function seedDatabase(db: DB, admin?: { email: string; password: st
     .values(Object.entries(DEFAULT_SETTINGS).map(([key, value]) => ({ key, value: String(value) })))
     .onConflictDoNothing();
 
-  if (admin) {
-    await db
-      .insert(admins)
-      .values({
-        name: admin.name ?? "Store Admin",
-        email: admin.email.toLowerCase(),
-        passwordHash: await bcrypt.hash(admin.password, 12),
-      })
-      .onConflictDoNothing();
-  }
+  if (admin) await ensureAdmin(db, admin);
+}
+
+/** Creates the admin account if that email has none yet. Never changes an existing password. */
+export async function ensureAdmin(db: DB, admin: { email: string; password: string; name?: string }) {
+  await db
+    .insert(admins)
+    .values({
+      name: admin.name ?? "Store Admin",
+      email: admin.email.toLowerCase(),
+      passwordHash: await bcrypt.hash(admin.password, 12),
+    })
+    .onConflictDoNothing();
 }
 
 /** Development helper: seed a fresh local database with demo data + a demo admin. */

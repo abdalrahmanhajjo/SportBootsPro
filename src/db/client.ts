@@ -13,7 +13,8 @@ const migrationsFolder = path.join(process.cwd(), "drizzle");
  *   It is migrated and seeded automatically so `npm run dev` works with zero setup.
  */
 export async function createDb(options: { url?: string; pgliteDir?: string; seed?: boolean } = {}): Promise<DB> {
-  const url = options.url ?? process.env.DATABASE_URL;
+  // Vercel's Neon integration sets DATABASE_URL (and POSTGRES_URL).
+  const url = options.url ?? (process.env.DATABASE_URL || process.env.POSTGRES_URL);
 
   if (url) {
     const { Pool } = await import("pg");

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { addItem, cartCount, MAX_QTY_PER_LINE, parseCart, removeItem, setItemQty } from "@/lib/cart";
 import { formatMoney, parseMoney } from "@/lib/money";
 import { parseSettings, shippingFor } from "@/lib/settings-defaults";
@@ -86,5 +86,27 @@ describe("admin session token", () => {
     expect(await verifySession(token)).toEqual({ sub: "1", email: "a@b.co", name: "A" });
     expect(await verifySession(token.slice(0, -2) + "xx")).toBeNull();
     expect(await verifySession(undefined)).toBeNull();
+  });
+});
+
+describe("session key in production", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("derives a key from the database URL when AUTH_SECRET is missing", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("AUTH_SECRET", "");
+    vi.stubEnv("DATABASE_URL", "postgres://user:pass@db.example/neondb");
+    const token = await signSession({ sub: "1", email: "a@b.co", name: "A" });
+    expect(await verifySession(token)).toMatchObject({ sub: "1" });
+    vi.stubEnv("DATABASE_URL", "postgres://user:other@db.example/neondb");
+    expect(await verifySession(token)).toBeNull(); // a different database means a different key
+  });
+
+  it("refuses to sign without any secret", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("AUTH_SECRET", "");
+    vi.stubEnv("DATABASE_URL", "");
+    vi.stubEnv("POSTGRES_URL", "");
+    await expect(signSession({ sub: "1", email: "a@b.co", name: "A" })).rejects.toThrow(/AUTH_SECRET/);
   });
 });

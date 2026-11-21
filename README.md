@@ -72,28 +72,25 @@ To start over with fresh demo data, stop the server and delete the `.data` folde
 |---|---|
 | `npm run dev` | Development server |
 | `npm run build` / `npm start` | Production build / server |
-| `npm test` | Unit + database tests (25 tests, in-memory PostgreSQL) |
+| `npm test` | Unit + database tests (27 tests, in-memory PostgreSQL) |
 | `npm run lint` / `npm run typecheck` | ESLint / TypeScript |
 | `npm run db:generate` | Create a migration after editing `src/db/schema.ts` |
 | `npm run db:migrate` | Apply migrations to `DATABASE_URL` |
 | `npm run db:seed` | Add demo catalog, settings and your admin (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) |
+| `npm run db:deploy` | What every deploy runs: migrations + first-time catalog + admin account |
 
 ## Deploy (free): Vercel + Neon
 
-1. **Database:** create a free PostgreSQL database on [Neon](https://neon.tech) and copy its connection string.
-2. **Create the tables and your admin** from your computer:
-   ```bash
-   export DATABASE_URL="postgres://…neon.tech/neondb?sslmode=require"
-   npm run db:migrate
-   ADMIN_EMAIL="you@example.com" ADMIN_PASSWORD="a-long-strong-password" npm run db:seed
-   ```
-3. **App:** import this repo on [Vercel](https://vercel.com) and add these environment variables:
-   - `DATABASE_URL`: the Neon connection string
-   - `AUTH_SECRET`: output of `openssl rand -hex 32`
-   - `NEXT_PUBLIC_SITE_URL`: your site address, e.g. `https://sportbootspro.vercel.app`
-4. Deploy. Check `https://your-site/api/health`, which should say `{"ok":true,"db":"up"}`.
+1. On [Vercel](https://vercel.com/new), import this GitHub repo (framework: Next.js; `vercel.json` sets the build command).
+2. In the project, open **Storage → Create Database → Neon (Postgres)** and connect it to the project. This adds `DATABASE_URL` automatically.
+3. In **Settings → Environment Variables**, add your admin login:
+   - `ADMIN_EMAIL`: your email
+   - `ADMIN_PASSWORD`: at least 10 characters
+   - Optional: `AUTH_SECRET` (`openssl rand -hex 32`). Without it, the session key is derived from the database URL.
+4. **Redeploy.** Every deploy runs `npm run db:deploy`, which applies migrations, adds the demo catalog the first time, and creates the admin account if it doesn't exist. Products you delete stay deleted.
+5. Check `https://your-site.vercel.app/api/health`, which should say `{"ok":true,"db":"up"}`. Then sign in at `/admin`.
 
-Any Node.js host works the same way (Railway, Render, a VPS with `npm run build && npm start`). Plain PHP shared hosting such as InfinityFree cannot run this app.
+Any Node.js host works the same way: set `DATABASE_URL`, then run `npm run db:deploy && npm run build && npm start`. Plain PHP shared hosting such as InfinityFree cannot run this app.
 
 ## Project structure
 
